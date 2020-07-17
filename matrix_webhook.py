@@ -10,6 +10,7 @@ v2: matrix-nio & aiohttp & markdown
 import asyncio
 import json
 import os
+import logging
 from http import HTTPStatus
 from signal import SIGINT, SIGTERM
 
@@ -66,6 +67,7 @@ async def main(event):
 
     server = web.Server(handler)
     runner = web.ServerRunner(server)
+    logging.basicConfig(level=logging.DEBUG)
     await runner.setup()
     site = web.TCPSite(runner, *SERVER_ADDRESS)
     await site.start()
@@ -98,6 +100,4 @@ def run():
 
 
 if __name__ == '__main__':
-    run(
-      debug = 1
-      )
+    run()
