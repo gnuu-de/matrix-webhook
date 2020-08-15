@@ -39,11 +39,12 @@ async def handler(request):
     except json.decoder.JSONDecodeError:
         data = {}
         status, ret = HTTPStatus.BAD_REQUEST, 'This was not valid JSON'
-    if all(key in data for key in ['text', 'key']):
+    if all(key in data for key in ['text', 'key', 'room']):
         status, ret = HTTPStatus.UNAUTHORIZED, 'I need the good "key"'
         if data['key'] == API_KEY:
             status, ret = HTTPStatus.OK, 'OK'
-            await CLIENT.room_send(room_id=str(request.rel_url)[1:],
+            await CLIENT.room_send(room_id=data['room'],
+                                   # str(request.rel_url)[1:],
                                    message_type="m.room.message",
                                    content={
                                        "msgtype": "m.text",
